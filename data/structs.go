@@ -1,7 +1,8 @@
 package data
 
-type BotToken struct {
+type BotSettings struct {
 	Bot struct {
-		Auth string `yaml:"auth"`
+		Auth   string `yaml:"auth"`
+		Prefix string `yaml:"prefix"`
 	}
 }

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"vinibot/application"
+	"vinibot/bot"
 )
 
 func main() {
-	application.StartApp()
+	bot.Run()
 }

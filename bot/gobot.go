@@ -3,8 +3,8 @@ package bot
 import (
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
+	"vinibot/bot/events"
 	"vinibot/data"
 	"vinibot/utils"
 
@@ -13,7 +13,7 @@ import (
 )
 
 func Run() {
-	botToken := new(data.BotToken)
+	botToken := new(data.BotSettings)
 	token := utils.GetBotToken(botToken)
 
 	discord, err := discordgo.New("Bot " + token)
@@ -21,35 +21,20 @@ func Run() {
 		log.Errorln("Error creating Discord session,", err)
 	}
 
-	discord.AddHandler(messageCreate)
+	discord.AddHandler(events.MessageCreate)
 
 	err = discord.Open()
 	if err != nil {
 		log.Errorln("Error opening connection,", err)
 	}
 
+	utils.WelcomeMessage()
 	log.Infoln("Bot is now running!")
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
 
 	discord.Close()
-	log.Infof("\rRIP ViniBot =(")
+	log.Infoln("\rRIP ViniBot =(")
 
-}
-
-func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-	message := strings.ToLower(m.Content)
-
-	if m.Author.ID == s.State.User.ID {
-		return
-	}
-
-	if message == "!ping" {
-		s.ChannelMessageSend(m.ChannelID, "Pong!")
-	}
-
-	if message == "!pong" {
-		s.ChannelMessageSend(m.ChannelID, "Ping!")
-	}
 }
