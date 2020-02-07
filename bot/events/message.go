@@ -23,6 +23,7 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
+	message = strings.Split(message, " ")[0]
 	message = strings.TrimPrefix(message, messagePrefix)
 
 	registry.Get(message)(s, m)
