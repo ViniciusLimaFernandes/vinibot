@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"vinibot/bot"
 )
 
 func main() {
-	fmt.Println("Test!")
+	bot.Run()
 }
